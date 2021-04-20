@@ -4,6 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
+/**
+ * {@link https://tools.ietf.org/html/rfc2616#section-3.2}
+ */
 @EqualsAndHashCode
 @ToString
 public class URI {

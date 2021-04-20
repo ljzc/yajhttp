@@ -6,6 +6,10 @@ import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Response Code
+ * {@link https://tools.ietf.org/html/rfc2616#section-6.1.1}
+ */
 @AllArgsConstructor
 @Getter
 public enum Status {
