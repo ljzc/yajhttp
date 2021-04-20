@@ -7,7 +7,6 @@ import lombok.Cleanup;
 
 import nju.yajhttp.message.Method;
 import nju.yajhttp.message.Request;
-import nju.yajhttp.message.Response;
 import nju.yajhttp.message.Version;
 
 public class Main {
@@ -15,7 +14,7 @@ public class Main {
         try {
             var request = new Request().method(Method.GET).uri("/etc/passwd")
                     .version(Version.HTTP1_0);
-            var socket = new Socket("localhost", 8000);
+            @Cleanup var socket = new Socket("localhost", 8000);
             var os = socket.getOutputStream();
             request.write(os);
             var is = socket.getInputStream();

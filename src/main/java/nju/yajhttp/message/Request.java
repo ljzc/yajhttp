@@ -7,7 +7,6 @@ import lombok.SneakyThrows;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import static nju.yajhttp.message.Constants.colonsep;
@@ -63,9 +62,9 @@ public class Request {
         s.write(version.toBytes());
         s.write(crlf);
         for (var h : headers.entrySet()) {
-            s.write(h.getKey().getBytes(StandardCharsets.US_ASCII));
+            s.write(Util.toBytes(h.getKey()));
             s.write(colonsep);
-            s.write(h.getValue().getBytes(StandardCharsets.US_ASCII));
+            s.write(Util.toBytes(h.getValue()));
             s.write(crlf);
         }
         s.write(crlf);

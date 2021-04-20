@@ -4,8 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
-import java.nio.charset.StandardCharsets;
-
 @EqualsAndHashCode
 @ToString
 public class URI {
@@ -49,6 +47,6 @@ public class URI {
     }
 
     public byte[] toBytes() {
-        return uri.toASCIIString().getBytes(StandardCharsets.US_ASCII);
+        return Util.toBytes(uri.toASCIIString());
     }
 }

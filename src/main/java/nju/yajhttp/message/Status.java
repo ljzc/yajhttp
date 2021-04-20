@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 
 @AllArgsConstructor
 @Getter
@@ -26,12 +24,9 @@ public enum Status {
     @SneakyThrows
     public byte[] toBytes() {
         var s = new ByteArrayOutputStream();
-        s.write(Integer.toString(code).getBytes(StandardCharsets.US_ASCII));
+        s.write(Util.toBytes(Integer.toString(code)));
         s.write(' ');
-        s.write(toString()
-                .replace('_', ' ')
-                .toLowerCase()
-                .getBytes(StandardCharsets.US_ASCII));
+        s.write(Util.toBytes(toString().replace('_', ' ').toLowerCase()));
         return s.toByteArray();
     }
 }
