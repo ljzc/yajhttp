@@ -41,6 +41,11 @@ public class Request {
         return this;
     }
 
+    public Request uri(URI uri) {
+        this.uri = uri;
+        return this;
+    }
+
     public static Request parse(InputStream stream) {
         // TODO: parse request
         return null;
