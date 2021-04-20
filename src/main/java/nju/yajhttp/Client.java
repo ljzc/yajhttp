@@ -19,9 +19,6 @@ public class Client {
             case "http":
                 port = 80;
                 break;
-            case "https":
-                port = 443;
-                break;
             default:
                 throw new Error();
             }
