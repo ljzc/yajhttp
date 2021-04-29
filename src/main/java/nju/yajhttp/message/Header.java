@@ -1,6 +1,7 @@
 package nju.yajhttp.message;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -20,5 +21,12 @@ public class Header {
         s.write(Constants.colonsep);
         s.write(Util.toBytes(value));
         return s.toByteArray();
+    }
+
+    static Header read(InputStream s) {
+        var h = Util.fromBytes(Util.readUntil(s, '\n')).split(":", 2);
+        if (h.length != 2)
+            return null;
+        return new Header(h[0].strip(), h[1].strip());
     }
 }

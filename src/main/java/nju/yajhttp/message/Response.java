@@ -52,17 +52,44 @@ public class Response {
     }
 
     /**
+     * Set header value
+     * 
+     * @param header header
+     */
+    public Response header(@NonNull Header header) {
+        headers.put(header.value(), header);
+        return this;
+    }
+
+    /**
      * Read {@link Response} from {@link InputStream}
      * 
      * @param stream
      */
+    @SneakyThrows
     public static Response read(InputStream stream) {
-        // TODO: parse request
-        return null;
+        Response r = new Response().version(Version.read(stream)).status(Status.read(stream));
+
+        // skip message
+        Util.readUntil(stream, '\n');
+
+        for (var h = Header.read(stream); h != null; h = Header.read(stream)) {
+            r.header(h);
+        }
+
+        var len = r.header("Content-Length");
+        if (len != null) {
+            r.body(stream.readNBytes(Integer.valueOf(len)));
+        } else {
+            r.body(stream.readAllBytes());
+        }
+
+        return r;
     }
 
     /**
      * Write {@link Response} to {@link OutputStream}
+     * 
      * @param stream
      */
     @SneakyThrows

@@ -5,10 +5,11 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.HashMap;
 
 /**
- * Response Code
- * {@link https://tools.ietf.org/html/rfc2616#section-6.1.1}
+ * Response Code {@link https://tools.ietf.org/html/rfc2616#section-6.1.1}
  */
 @AllArgsConstructor
 @Getter
@@ -25,6 +26,14 @@ public enum Status {
 
     private final int code;
 
+    private static HashMap<Integer, Status> valueMap = new HashMap<>();
+
+    static {
+        for (var v : Status.values()) {
+            valueMap.put(v.code, v);
+        }
+    }
+
     @SneakyThrows
     public byte[] toBytes() {
         var s = new ByteArrayOutputStream();
@@ -32,5 +41,12 @@ public enum Status {
         s.write(' ');
         s.write(Util.toBytes(toString().replace('_', ' ').toLowerCase()));
         return s.toByteArray();
+    }
+
+    static Status read(InputStream s) {
+        var v = valueMap.get(Integer.valueOf(Util.fromBytes(Util.readUntil(s, ' '))));
+        if (v == null)
+            throw new IllegalArgumentException();
+        return v;
     }
 }

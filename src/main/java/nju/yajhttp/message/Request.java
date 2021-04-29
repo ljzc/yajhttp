@@ -54,6 +54,16 @@ public class Request {
     }
 
     /**
+     * Set header value
+     * 
+     * @param header header
+     */
+    public Request header(@NonNull Header header) {
+        headers.put(header.value(), header);
+        return this;
+    }
+
+    /**
      * Set URI to string
      * 
      * @param str uri string
@@ -73,13 +83,25 @@ public class Request {
      * 
      * @param stream
      */
+    @SneakyThrows
     public static Request read(InputStream stream) {
-        // TODO: parse request
-        return null;
+        var r = new Request().method(Method.read(stream)).uri(URI.read(stream)).version(Version.read(stream));
+
+        for (var h = Header.read(stream); h != null; h = Header.read(stream)) {
+            r.header(h);
+        }
+
+        var len = r.header("Content-Length");
+        if (len != null) {
+            r.body(stream.readNBytes(Integer.valueOf(len)));
+        }
+
+        return r;
     }
 
     /**
      * Write {@link Request} to {@link OutputStream}
+     * 
      * @param stream
      */
     @SneakyThrows

@@ -1,5 +1,7 @@
 package nju.yajhttp.message;
 
+import java.io.InputStream;
+
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.ToString;
@@ -51,5 +53,9 @@ public class URI {
 
     public byte[] toBytes() {
         return Util.toBytes(uri.toASCIIString());
+    }
+
+    static URI read(InputStream stream) {
+        return new URI(Util.fromBytes(Util.readUntil(stream, ' ')));
     }
 }

@@ -8,9 +8,9 @@ import lombok.SneakyThrows;
 
 public class Util {
     @SneakyThrows
-    static byte[] readUntil(InputStream stream, byte b) {
+    static byte[] readUntil(InputStream stream, char c) {
         var s = new ByteArrayOutputStream();
-        for (int i = stream.read(); i != -1 && (byte) i != b; i = stream.read()) {
+        for (int i = stream.read(); i != -1 && (char) i != c; i = stream.read()) {
             s.write(i);
         }
         return s.toByteArray();
@@ -18,5 +18,9 @@ public class Util {
 
     static byte[] toBytes(String str) {
         return str.getBytes(StandardCharsets.US_ASCII);
+    }
+
+    static String fromBytes(byte[] b) {
+        return new String(b, StandardCharsets.UTF_8);
     }
 }
