@@ -1,6 +1,7 @@
 package nju.yajhttp.message;
 
 import java.io.InputStream;
+import java.net.URISyntaxException;
 
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
@@ -17,6 +18,10 @@ public class URI {
     @SneakyThrows
     public URI(String str) {
         uri = new java.net.URI(str);
+    }
+
+    private URI(java.net.URI uri){
+        this.uri  =uri;
     }
 
     public String authority() {
@@ -53,6 +58,14 @@ public class URI {
 
     public byte[] toBytes() {
         return Util.toBytes(uri.toASCIIString());
+    }
+
+    public URI relative(String relativePath) throws URISyntaxException {
+        String newPath = this.uri.getPath() + relativePath;
+        newPath = newPath.replace("//", "/");
+        return new URI(new java.net.URI(uri.getScheme(),
+                uri.getRawUserInfo(), uri.getHost(), uri.getPort(),
+        newPath, uri.getRawQuery(), uri.getRawFragment()));
     }
 
     static URI read(InputStream stream) {
