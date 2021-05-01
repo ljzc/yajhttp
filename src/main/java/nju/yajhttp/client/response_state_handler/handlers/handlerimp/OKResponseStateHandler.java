@@ -1,5 +1,6 @@
 package nju.yajhttp.client.response_state_handler.handlers.handlerimp;
 
+import nju.yajhttp.client.Util;
 import nju.yajhttp.client.response_state_handler.handlers.ResponseStateHandler;
 import nju.yajhttp.message.Request;
 import nju.yajhttp.message.Response;
@@ -14,7 +15,7 @@ public class OKResponseStateHandler extends ResponseStateHandler{
     @Override
     public String handle(Request oldRequest, Response response) {
         if(response.body() != null){
-            return bytes2Str(response.body());
+            return Util.bytes2Str(response.body());
         }else {
             return "";
         }

@@ -1,11 +1,8 @@
 package nju.yajhttp.client.response_state_handler.handlers;
 
-import nju.yajhttp.message.Request;
-import nju.yajhttp.message.Response;
-import nju.yajhttp.message.Status;
-import nju.yajhttp.message.Util;
+import nju.yajhttp.client.Util;
+import nju.yajhttp.message.*;
 
-import java.nio.charset.StandardCharsets;
 
 public class DefaultResponseStateHandler extends ResponseStateHandler{
     public DefaultResponseStateHandler() {
@@ -23,6 +20,6 @@ public class DefaultResponseStateHandler extends ResponseStateHandler{
             e.printStackTrace();
         }
 
-        return bytes2Str(response.toBytes());
+        return Util.bytes2Str(response.toBytes());
     }
 }
