@@ -1,7 +1,7 @@
 package nju.yajhttp.client.command_handler_pipeline;
 
 
-import lombok.Cleanup;
+import nju.yajhttp.client.Util;
 import nju.yajhttp.client.command_handler_pipeline.handlerimp.HelpCommandHandler;
 import nju.yajhttp.client.response_state_handler.ResponseStateHandlerMapper;
 
@@ -11,9 +11,7 @@ import org.reflections.Reflections;
 
 import java.io.IOException;
 
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -69,7 +67,8 @@ public class CommandHandlerPipeline {
                 Request request = new Request()
                         .method(Method.GET)
                         .version(Version.HTTP1_0)
-                        .uri(uri).header("Host", uri.host());
+                        .uri(uri).header("Host", uri.host())
+                        .header(new Header("Accept", "*/*"));
 
                 for(ConstructRequestCommandHandler handler : constructRequestCommandHandlers){
                     if(commandLine.hasOption(handler.getShortOpt())){
@@ -77,7 +76,7 @@ public class CommandHandlerPipeline {
                     }
                 }
 
-                var port = 0;
+                /*var port = 0;
                 switch (uri.scheme()) {
                     case "http":
                         port = 80;
@@ -90,8 +89,13 @@ public class CommandHandlerPipeline {
                 Socket socket = new Socket(uri.host(), port);
                 OutputStream os = socket.getOutputStream();
                 request.write(os);
-                Response response = Response.read(socket.getInputStream());
+                byte[] bytes = socket.getInputStream().readAllBytes();
+                InputStream is = new ByteArrayInputStream(bytes);
+                System.out.println(new String(bytes, StandardCharsets.UTF_8));
 
+                Response response = Response.read(is);
+                System.out.println(new String(response.toBytes(), StandardCharsets.UTF_8));*/
+                Response response = Util.sendRequest(uri, request);
                 outputMessage.append(ResponseStateHandlerMapper.getInstance().map(response.status()).handle(request, response));
             }
 
