@@ -19,6 +19,10 @@ public class URI {
         uri = new java.net.URI(str);
     }
 
+    public URI(java.net.URI uri){
+        this.uri = uri;
+    }
+
     public String authority() {
         return uri.getAuthority();
     }
@@ -53,6 +57,10 @@ public class URI {
 
     public byte[] toBytes() {
         return Util.toBytes(uri.toASCIIString());
+    }
+
+    public URI resolve(String s){
+        return new URI(uri.resolve(s));
     }
 
     static URI read(InputStream stream) {
